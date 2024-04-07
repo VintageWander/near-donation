@@ -42,6 +42,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     assert!(bob_first_donation_result.is_success());
 
+    // Alice's second donation
     let _ = alice
         .call(contract.id(), "donate")
         .args_json(json!({}))
@@ -65,13 +66,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         total_amount: NearToken,
     }
 
-    let donation: Donation = contract
+    let alice_donation: Donation = contract
         .view("get_donation_for_account")
         .args_json(json!({"account_id": alice.id()}))
         .await?
         .json()?;
 
-    assert_eq!(donation.total_amount, NearToken::from_near(4));
+    assert_eq!(alice_donation.total_amount, NearToken::from_near(4));
 
     let donations: Vec<Donation> = contract
         .view("get_donations")
